@@ -109,6 +109,7 @@ public class SimpleList {
 						}
 						
 						list[index] = list[index2];
+						
 						list[index2] = 0; //so multiple elements won't copy the value originally here
 
 					}
@@ -161,16 +162,13 @@ public class SimpleList {
 		String stringlist = ""; //default return if no elements in list
 		
 		if (count() > 0) {
-			
-			stringlist = String.valueOf(list[0]); //start with first elem
-												//and then successively add on
 		
-			int counter = 1;
+			int counter = 0;
 		
-			while(counter < count) {
+			while(counter < count()) {
 
-				String storedelem = String.valueOf(list[counter]);
-			
+				String storedelem = String.valueOf(list[counter]); 
+				
 				stringlist = stringlist.concat(" ").concat(storedelem); 
 			
 				counter++;
@@ -198,7 +196,8 @@ public class SimpleList {
 		while(counter >= 0) {
 			
 			if(list[counter] == searchelem) {
-				found = counter; //reassings found to index if found
+				
+				found = counter; //reassign found to index if found
 			}
 			
 			counter--;
@@ -249,8 +248,11 @@ public class SimpleList {
 	public int first() {
 		
 		if(count() == 0) //where count returns the number of elements in the list currently
+			
 			return -1; 
+		
 		else
+			
 			return list[0];
 	}
 	
@@ -262,8 +264,11 @@ public class SimpleList {
 	public int last() {
 		
 		if(count() == 0) //where count() is the number of elements in the list currently
+			
 			return -1; 
+		
 		else
+	
 			return list[count() - 1];
 	}
 	
