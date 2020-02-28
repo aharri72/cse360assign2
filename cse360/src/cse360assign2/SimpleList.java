@@ -34,19 +34,44 @@ public class SimpleList {
 	 */
 	public void add(int addelem) {
 		
-		if (count != 10) //update the total number of elements
+		if (count != list.length) { //update the total number of elements
+			
+			int counter = count;
+		
+			while(counter > 0) {
+			
+				list[counter] = list[counter - 1]; //move all elements one space to the right
+			
+				counter--;
+			
+			}
+
+			list[0] = addelem; 
+			
 			count++;
 		
-		int counter = count;
-		
-		while(counter > 0) {
-			
-			list[counter] = list[counter - 1]; //move all elements one space to the right
-			
-			counter--;
 		}
+		
+		else {
+			
+			int[] holder = list; //create another pointer to the list array to preserve the data in the array
+			
+			list = new int[(int) (holder.length * 1.5)]; //create a new array for list; list now points to a different object
+		
+			int counter = count();
+			
+			while(counter > 1) {
+			
+				list[counter] = holder[counter - 1]; //move all elements one space to the right
+			
+				counter--;
+			
+			}
+			
+			list[0] = addelem; //add the new element to list
 
-		list[0] = addelem; 
+			count++; 
+		}
 	}
 	
 	/**
@@ -66,31 +91,52 @@ public class SimpleList {
 				
 				while(index < count) { //for the rest of the elements in the list
 				
-					list[index] = list[index + 1]; //move them one place to the left 
+					
+					if (list[index + 1] != removeelem) {
+						
+						
+						list[index] = list[index + 1]; //move them one place to the left 
+					}
+					
+					else {
+						
+						int index2 = counter + 1;
+						
+						while(list[index2] == removeelem && index2 < list.length) { //while the next element is still the one we are 
+																					//trying to replace
+							
+							index2++; //skip it
+						}
+						
+						list[index] = list[index2];
+						list[index2] = 0; //so multiple elements won't copy the value originally here
+
+					}
 					
 					index++;
-				}
+				} 
 			
-				counter = 0; //in case the shifting of elements left moves another
-							//occurence of removeelem to the first's spot,
-							//this re-check the list starting from index 1 on
+				count --;
 			}
 			
 			counter++;
+			
 		}
 		
-		if(list[0] == removeelem) { //in case another occurence of removeelem
-									//got moved to index 0, this will re-check
-									//index 0 and shift all elements in the list
-									//left to remove removeelem at index 0
+		if((list.length * .25) < size()) {
 			
+			int[] holder = list; //create another pointer to the list array to preserve the data in the array
+			
+			list = new int[(int) (holder.length * .75)]; //create a new array for list; list now points to a different object
+		
 			int counter2 = 0;
 			
-			while(counter2 < count) {
+			while(counter2 < count()) {
 			
-				list[counter2] = list[counter2 + 1];
-				
+				list[counter2] = holder[counter2]; //move all elements one space to the right
+			
 				counter2++;
+			
 			}
 		}
 	}
@@ -149,5 +195,75 @@ public class SimpleList {
 		}
 		
 		return -1;
+	}
+	
+	/**
+	 * Append an element to the end of the list
+	 * 
+	 * @param newint the integer being appended to the list
+	 */
+	public void append(int newint) {
+		
+		if (count() != list.length) { //if the array isn't full
+			
+			list[count()] = newint;
+			
+			count++;
+		}
+		
+		else { //if the array is full
+			
+			int[] holder = list; //create another pointer to the list array to preserve the data in the array
+			
+			list = new int[(int) (holder.length * 1.5)]; //create a new array for list; list now points to a different object
+			
+			int index = 0;
+			
+			while(index < holder.length) { //for each element in holder
+				
+				list[index] = holder[index]; //copy it to list
+			}
+			
+			list[count()] = newint; //add the new element to list
+
+			count++;
+		}
+			
+	}
+	
+	/**
+	 * Return the first element of the list
+	 * 
+	 * @return the first element of the list or -1 if no elements in list
+	 */
+	public int first() {
+		
+		if(count() == 0) //where count returns the number of elements in the list currently
+			return -1; 
+		else
+			return list[0];
+	}
+	
+	/**
+	 * Return the last element of the list
+	 * 
+	 * @return the last element of the list or -1 if no elements in list
+	 */
+	public int last() {
+		
+		if(count() == 0) //where count() is the number of elements in the list currently
+			return -1; 
+		else
+			return list[count() - 1];
+	}
+	
+	/**
+	 * Return the current number of possible locations in the list
+	 * 
+	 * @return the current number of possible locations in the list
+	 */
+	public int size() {
+		
+		return list.length - count(); //where count returns the number of elements in the list currently
 	}
 }
