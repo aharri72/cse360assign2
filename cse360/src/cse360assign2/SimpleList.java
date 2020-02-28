@@ -158,21 +158,28 @@ public class SimpleList {
 	 */
 	public String toString() {
 		
-		String stringlist = String.valueOf(list[0]); //start with first elem
+		String stringlist = ""; //default return if no elements in list
+		
+		if (count() > 0) {
+			
+			stringlist = String.valueOf(list[0]); //start with first elem
 												//and then successively add on
 		
-		int counter = 1;
+			int counter = 1;
 		
-		while(counter < count) {
+			while(counter < count) {
 
-			String storedelem = String.valueOf(list[counter]);
+				String storedelem = String.valueOf(list[counter]);
 			
-			stringlist = stringlist + " " + storedelem; 
+				stringlist = stringlist.concat(" ").concat(storedelem); 
 			
-			counter++;
+				counter++;
+			}
+		
 		}
 
-		return stringlist;
+		return stringlist; 
+		
 	}
 	
 	/**
@@ -184,17 +191,20 @@ public class SimpleList {
 	 */
 	public int search(int searchelem) {
 		
-		int counter = 0;
+		int counter = count - 1;
 		
-		while(counter < count) {
+		int found = -1; //will return -1 by default if searchelem not found
+		
+		while(counter >= 0) {
 			
-			if(list[counter] == searchelem)
-				return counter;
+			if(list[counter] == searchelem) {
+				found = counter; //reassings found to index if found
+			}
 			
-			counter++;
+			counter--;
 		}
 		
-		return -1;
+		return found;
 	}
 	
 	/**
